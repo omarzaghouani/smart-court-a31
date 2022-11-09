@@ -23,15 +23,19 @@ SOURCES += \
     connection.cpp \
     juje.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    statistique.cpp
 
 HEADERS += \
+    WebAxWidget.h \
     connection.h \
     juje.h \
-    mainwindow.h
+    mainwindow.h \
+    statistique.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    statistique.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

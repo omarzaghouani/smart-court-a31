@@ -16,6 +16,7 @@
 #include <QDesktopWidget>
 #include <QDialog>
 #include <QTextStream>
+#include <QAxWidget>
 #define NOM_RX "^([a-z]+[,.]?[ ]?|[A-Z]+['-]?)+$"
 
 QT_BEGIN_NAMESPACE
@@ -45,6 +46,10 @@ private slots:
     void on_pushButton_trier_clicked();
 
     void on_pushButton_17_clicked();
+
+    void on_pushButton_Actualise_h_clicked();
+
+    void on_pushButton_Sui_m_2_clicked();
 
 private:
     Ui::MainWindow *ui;

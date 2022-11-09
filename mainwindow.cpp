@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "statistique.h"
 #include <QVariant>
 #include <QSqlQuery>
 #include <QPdfWriter>
@@ -34,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
    ui-> tableView_aff_h_2->setModel(j.afficher());
 
 ui->id->setValidator(new QIntValidator(0, 999999, this));
- ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/map.qml")));
+ /*ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/map.qml")));
   ui->quickWidget->show();
 
 auto obj = ui->quickWidget->rootObject();
@@ -44,17 +45,16 @@ connect(this, SIGNAL(setCenter(QVariant, QVariant)), obj, SLOT(setCenter(QVarian
 
  emit setCenter(25.000, 50.000);
  emit addMarker(25.000, 50.000);
-
- /*//maps
+*/
+ //maps
  QSettings settings(QSettings::IniFormat, QSettings::UserScope,
                     QCoreApplication::organizationName(), QCoreApplication::applicationName());
 
- ui->quickWidget->dynamicCall("Navigate(const QString&)", "https://www.google.com/maps/place/ESPRIT/@36.9016729,10.1713215,15z");
+ ui->WebBrowser_2->dynamicCall("Navigate(const QString&)", "https://www.google.com/maps/place/ESPRIT/@36.9016729,10.1713215,15z");
 
-*/
+  //ui->axWidget->show();
 
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -183,7 +183,7 @@ void MainWindow::on_pushButton_trier_clicked()
         QSqlQueryModel *model= new QSqlQueryModel();
         QSqlQuery *query=new QSqlQuery;
 
-        query->prepare("SELECT * FROM jugeee ORDER BY identifiant ASC");
+        query->prepare("SELECT * FROM jugeee ORDER BY identifiant  DESC ");
 
 
         query->exec();
@@ -255,145 +255,110 @@ void  MainWindow::browse()
   */
 
 
-/*
- * //pdf : vous trouver le fichier dans le dossier build
-void MainWindow::on_pdf_clicked()
-{
-
-    QString strStream;
-                QTextStream out(&strStream);
-                const int rowCount = ui->tableau->model()->rowCount();
-                const int columnCount =ui->tableau->model()->columnCount();
-
-
-                out <<  "<html>\n"
-                        "<head>\n"
-                        "<meta Content=\"Text/html; charset=Windows-1251\">\n"
-                        <<  QString("<title>%1</title>\n").arg("eleve")
-                        <<  "</head>\n"
-                        "<body bgcolor=#CFC4E1 link=#5000A0>\n"
-                            "<h1>Liste des Evenements</h1>"
-
-                            "<table border=1 cellspacing=0 cellpadding=2>\n";
-
-                // headers
-                    out << "<thead><tr bgcolor=#f0f0f0>";
-                    for (int column = 0; column < columnCount; column++)
-                        if (!ui->tableau->isColumnHidden(column))
-                            out << QString("<th>%1</th>").arg(ui->tableau->model()->headerData(column, Qt::Horizontal).toString());
-                    out << "</tr></thead>\n";
-                    // data table
-                       for (int row = 0; row < rowCount; row++) {
-                           out << "<tr>";
-                           for (int column = 0; column < columnCount; column++) {
-                               if (!ui->tableau->isColumnHidden(column)) {
-                                   QString data = ui->tableau->model()->data(ui->tableau->model()->index(row, column)).toString().simplified();
-                                   out << QString("<td bkcolor=0>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
-                               }
-                           }
-                           out << "</tr>\n";
-                       }
-                       out <<  "</table>\n"
-                           "</body>\n"
-                           "</html>\n";
-
-
-
-        QTextDocument *document = new QTextDocument();
-        document->setHtml(strStream);
-
-
-        //QTextDocument document;
-        //document.setHtml(html);
-        QPrinter printer(QPrinter::PrinterResolution);
-        printer.setOutputFormat(QPrinter::PdfFormat);
-        printer.setOutputFileName("mypdffile.pdf");
-        document->print(&printer);
-
-}
-
- **/
-
-
-
-
 
 void MainWindow::on_pushButton_17_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                             "/home",
-                                                             QFileDialog::ShowDirsOnly
-                                                             | QFileDialog::DontResolveSymlinks);
-                 qDebug()<<dir;
-                 QPdfWriter pdf(dir+"/PdfList.pdf");
-                                        QPainter painter(&pdf);
-                                       int i = 4000;
+                                                           "/home",
+                                                           QFileDialog::ShowDirsOnly
+                                                           | QFileDialog::DontResolveSymlinks);
+               qDebug()<<dir;
+               QPdfWriter pdf(dir+"/PdfList.pdf");
+                                      QPainter painter(&pdf);
+                                     int i = 4000;
 
-                                       painter.drawPixmap(QRect(100,100,2000,2000),QPixmap("C:/Users/Admin/Desktop/logo.png"));
-                                           painter.drawText(900,650,"omar zaghouani");
+                                     painter.drawPixmap(QRect(100,100,2000,2000),QPixmap("C:/Users/Admin/Desktop/logo.png"));
+                                         painter.drawText(900,650,"omar zaghouani");
 
-                                            //painter.drawPixmap(QRect(7600,100,2100,2700),QPixmap("C:/Users/Admin/Desktop/logo.png"));
+                                          //painter.drawPixmap(QRect(7600,100,2100,2700),QPixmap("C:/Users/Admin/Desktop/logo.png"));
 
-                                            painter.setPen(Qt::blue);
-                                            painter.setFont(QFont("Time New Roman", 25));
-                                            painter.drawText(3000,1400,"Liste Des juges");
-                                            painter.setPen(Qt::black);
-                                            painter.setFont(QFont("Time New Roman", 15));
-                                            painter.drawRect(100,100,9400,2500);
-                                            painter.drawRect(100,3000,9400,500);
-                                            painter.setFont(QFont("Time New Roman", 9));
-                                            painter.drawText(300,3300,"identifiant");
-                                            painter.drawText(2300,3300,"Prenom");
-                                            painter.drawText(4300,3300,"Nom");
-                                            painter.drawText(6300,3300,"type");
-                                            painter.drawText(7500,3300,"mot de passe");
-                                           /* painter.drawText(8500,3300,"ema");
-                                            painter.drawText(9500,3300,"Date Retour");
-                                            painter.drawText(10500,3300,"Date Naissance");*/
+                                          painter.setPen(Qt::blue);
+                                          painter.setFont(QFont("Time New Roman", 25));
+                                          painter.drawText(3000,1400,"Liste Des juges");
+                                          painter.setPen(Qt::black);
+                                          painter.setFont(QFont("Time New Roman", 15));
+                                          painter.drawRect(100,100,9400,2500);
+                                          painter.drawRect(100,3000,9400,500);
+                                          painter.setFont(QFont("Time New Roman", 9));
+                                          painter.drawText(300,3300,"identifiant");
+                                          painter.drawText(2300,3300,"Prenom");
+                                          painter.drawText(4300,3300,"Nom");
+                                          painter.drawText(6300,3300,"mot de passe");
+                                          painter.drawText(7500,3300,"type");
+                                         /* painter.drawText(8500,3300,"Date ");
+                                          painter.drawText(9500,3300,"Date Retour");
+                                          painter.drawText(10500,3300,"Date Naissance");*/
 
-                                            painter.drawRect(100,3000,9400,10700);
-
-
-                                            QTextDocument previewDoc;
-                                            QString pdflist = QDate::currentDate().toString("'data_'MM_dd_yyyy'.txt'");
+                                          painter.drawRect(100,3000,9400,10700);
 
 
-                                            QTextCursor cursor(&previewDoc);
+                                          QTextDocument previewDoc;
+                                          QString pdflist = QDate::currentDate().toString("'data_'MM_dd_yyyy'.txt'");
 
 
-
-                                            QSqlQuery query;
-                                            query.prepare("select * from jugeee");
-                                            query.exec();
-                                            while (query.next())
-                                            {
-                                                painter.drawText(300,i,query.value(0).toString());
-                                                painter.drawText(2300,i,query.value(1).toString());
-                                                painter.drawText(4300,i,query.value(2).toString());
-                                                painter.drawText(6300,i,query.value(3).toString());
-                                                painter.drawText(7500,i,query.value(4).toString());
-                                               /* painter.drawText(8500,i,query.value(5).toString());
-                                                painter.drawText(9500,i,query.value(6).toString());
-                                                painter.drawText(10500,i,query.value(7).toString());*/
+                                          QTextCursor cursor(&previewDoc);
 
 
 
-
-                                               i = i +500;
-                                            }
-                                            int reponse = QMessageBox::question(this, "Générer PDF", "<PDF Enregistré>...Vous Voulez Affichez Le PDF ?",
-                                                                                QMessageBox::Yes|QMessageBox::No);
-                                                if (reponse == QMessageBox::Yes)
-                                                {
-                                                    QDesktopServices::openUrl(QUrl::fromLocalFile(dir+"/PdfList.pdf"));
-
-                                                    painter.end();
-                                                }
-                                                else
-                                                {
-                                                     painter.end();
-       }
+                                          QSqlQuery query;
+                                          query.prepare("select * from jugeee");
+                                          query.exec();
+                                          while (query.next())
+                                          {
+                                              painter.drawText(300,i,query.value(0).toString());
+                                              painter.drawText(2300,i,query.value(1).toString());
+                                              painter.drawText(4300,i,query.value(2).toString());
+                                              painter.drawText(6300,i,query.value(3).toString());
+                                              painter.drawText(7500,i,query.value(4).toString());
+                                             /* painter.drawText(8500,i,query.value(5).toString());
+                                              painter.drawText(9500,i,query.value(6).toString());
+                                              painter.drawText(10500,i,query.value(7).toString());*/
 
 
 
+
+                                             i = i +500;
+                                          }
+                                          int reponse = QMessageBox::question(this, "Générer PDF", "<PDF Enregistré>...Vous Voulez Affichez Le PDF ?",
+                                                                              QMessageBox::Yes|QMessageBox::No);
+                                              if (reponse == QMessageBox::Yes)
+                                              {
+                                                  QDesktopServices::openUrl(QUrl::fromLocalFile(dir+"/PdfList.pdf"));
+
+                                                  painter.end();
+                                              }
+                                              else
+                                              {
+                                                   painter.end();
+     }
+
+}
+
+void MainWindow::on_pushButton_Actualise_h_clicked()
+{
+    QSqlQueryModel *model= new QSqlQueryModel();
+    QSqlQuery *query=new QSqlQuery;
+
+    query->prepare("SELECT * FROM jugeee ORDER BY identifiant  ASC ");
+
+
+    query->exec();
+
+    if (query->exec()&&query->next()) {
+        model->setQuery(*query);
+
+        ui->tableView_aff_h->setModel(model);
+
+QMessageBox::information(nullptr, QObject::tr("database is not open"),
+                                QObject::tr("trie succes.\n"
+
+                                  "Click Cancel to exit."), QMessageBox::Cancel);
+                }
+
+}
+
+void MainWindow::on_pushButton_Sui_m_2_clicked()
+{
+   statistique s;
+           s.exec();
 }
