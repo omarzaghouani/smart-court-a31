@@ -1,0 +1,42 @@
+<RCC>
+    <qresource prefix="/rsc">
+        <file>rsc/1.mp3</file>
+        <file>rsc/1.mp3.mp3</file>
+        <file>rsc/actualiser.mp3</file>
+        <file>rsc/afficher.mp3</file>
+        <file>rsc/annuler.mp3</file>
+        <file>rsc/back.png</file>
+        <file>rsc/chercher.mp3</file>
+        <file>rsc/cin personne.mp3</file>
+        <file>rsc/courrier.mp3</file>
+        <file>rsc/date.mp3</file>
+        <file>rsc/enregistrer l'historique sous forme pdf.mp3</file>
+        <file>rsc/historique.mp3</file>
+        <file>rsc/identifiant de l'avocat.mp3</file>
+        <file>rsc/identifiant du juge.mp3</file>
+        <file>rsc/imprimer l'historique.mp3</file>
+        <file>rsc/imprimer.mp3</file>
+        <file>rsc/modifier.mp3</file>
+        <file>rsc/ordre administratif.mp3</file>
+        <file>rsc/ordre juridique.mp3</file>
+        <file>rsc/ordre.mp3</file>
+        <file>rsc/pdf.mp3</file>
+        <file>rsc/supprimer tout les affaires.mp3</file>
+        <file>rsc/supprimer.mp3</file>
+        <file>rsc/trier selon le type.mp3</file>
+        <file>rsc/trier selon l'ordre.mp3</file>
+        <file>rsc/trier.mp3</file>
+        <file>rsc/type.mp3</file>
+        <file>rsc/descriptionetat.mp3</file>
+        <file>rsc/miseajour.mp3</file>
+        <file>rsc/numdusalle.mp3</file>
+        <file>rsc/reference.mp3</file>
+        <file>rsc/trierascendant.mp3</file>
+        <file>rsc/trierdescendant.mp3</file>
+        <file>rsc/type1erdegre.mp3</file>
+        <file>rsc/type2emedegre.mp3</file>
+        <file>rsc/typesupreme.mp3</file>
+        <file>rsc/vaj.mp3</file>
+        <file>rsc/vsaj.mp3</file>
+    </qresource>
+</RCC>
