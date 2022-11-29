@@ -167,3 +167,29 @@ bool juje::modifier()
     return    query.exec();}
     return false;
     }
+QStringList juje::listeadresses(QString var){
+    QSqlQuery query;
+    query.prepare("select DISTINCT("+var+") from jugeee");
+    query.exec();
+    QStringList list;
+    while(query.next())
+    {
+        list.append(query.value(0).toString());
+    }
+
+    return list;
+}
+int juje::calcul_adresses(QString adresse,QString val)
+{
+    QSqlQuery query;
+     query.prepare("select  * from jugeee  WHERE "+val+"=:adresse");
+     query.bindValue(":adresse", adresse );
+     query.exec();
+     int total=2;
+     while(query.next())
+     {
+       total++;
+     }
+     return total;
+}
+

@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "statistique.h"
+#include "mail.h"
+#include "mailsmtp.h"
+#include "window.h"
 #include <QVariant>
 #include <QSqlQuery>
 #include <QPdfWriter>
@@ -16,24 +19,40 @@
 #include <QPixmap>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QDate>
+#include <QSettings>
+#include <QSettings>
 #include <QApplication>
 #include <QtPrintSupport/QPrinter>
 #include <QTextDocument>
 #include <QtCore>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QBarSeries>
+#include <QtCharts/QBarSet>
+#include <QtCharts/QLegend>
+#include <QtCharts/QBarCategoryAxis>
+#include <QtCharts/QHorizontalStackedBarSeries>
+#include <QtCharts/QCategoryAxis>
+#include <QtCharts>
+#include <QtCharts/QPieSlice>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
 
 
-
+#include "calendrier.h"
 #include"juje.h"
+QString days="";
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
     QPixmap pix("C:/Users/omarz/OneDrive/Documents/gestion_des_juges/courtt");
     ui->label_pic->setPixmap(pix.scaled(949,902,Qt::KeepAspectRatio));
    ui-> tableView_aff_h->setModel(j.afficher());
    ui-> tableView_aff_h_2->setModel(j.afficher());
-
+// ui-> tableView_aff_h_3->setModel(j.afficher());
 ui->id->setValidator(new QIntValidator(0, 999999, this));
  /*ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/map.qml")));
   ui->quickWidget->show();
@@ -46,6 +65,10 @@ connect(this, SIGNAL(setCenter(QVariant, QVariant)), obj, SLOT(setCenter(QVarian
  emit setCenter(25.000, 50.000);
  emit addMarker(25.000, 50.000);
 */
+//for email tab
+connect(ui->sendBtn, SIGNAL(clicked()),this, SLOT(sendMail()));
+connect(ui->browseBtn, SIGNAL(clicked()), this, SLOT(browse()));
+
  //maps
  QSettings settings(QSettings::IniFormat, QSettings::UserScope,
                     QCoreApplication::organizationName(), QCoreApplication::applicationName());
@@ -53,8 +76,26 @@ connect(this, SIGNAL(setCenter(QVariant, QVariant)), obj, SLOT(setCenter(QVarian
  ui->WebBrowser_2->dynamicCall("Navigate(const QString&)", "https://www.google.com/maps/place/ESPRIT/@36.9016729,10.1713215,15z");
 
   //ui->axWidget->show();
+ //calendrier
+/*QSettings settings(QSettings::IniFormat, QSettings::UserScope,
+                   (QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+ ui->WebBrowser_3->dynamicCall("Navigate(const QString&)", "https://calendar.google.com/calendar/u/0/r");*/
 
 }
+void MainWindow::update()
+{
+    data=A.read_from_arduino();
+
+
+   if(data=="1")
+        QMessageBox::information(nullptr, QObject::tr("database is open"),
+                    QObject::tr(" rrrr"+data+"rrr.\n"
+                                "Click Cancel to exit."), QMessageBox::Cancel);
+
+
+}
+
 
 MainWindow::~MainWindow()
 {
@@ -206,7 +247,7 @@ proxy->setFilterFixedString(arg1);
 }*/
 
 
-/*//mailing
+//mailing
 void  MainWindow::browse()
 {
     files.clear();
@@ -224,23 +265,23 @@ void  MainWindow::browse()
 
     ui->file->setText( fileListString );
 
-}*/
-/*
- * void   MainWindow::sendMail()
-{
-    Smtp* smtp = new Smtp("mohamedaziz.benhaha@esprit.tn",ui->mail_pass->text(), "smtp.gmail.com");
-    connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
-
-    if( !files.isEmpty() )
-        smtp->sendMail("mohamedaziz.benhaha@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText(), files );
-    else
-        smtp->sendMail("mohamedaziz.benhaha@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText());
 }
- */
+
+  void   MainWindow::sendMail()
+{
+      Smtp* smtp = new Smtp("omar.zaghouani@esprit.tn",ui->mail_pass->text(), "smtp.gmail.com");
+      connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+
+      if( !files.isEmpty() )
+          smtp->sendMail("omar.zaghouani@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText(), files );
+      else
+          smtp->sendMail("omar.zaghouani@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText());
+}
 
 
-/*
- * void   MainWindow::mailSent(QString status)
+
+
+  void   MainWindow::mailSent(QString status)
 {
 
     if(status == "Message sent")
@@ -252,7 +293,7 @@ void  MainWindow::browse()
     ui->mail_pass->clear();
 }
 
-  */
+
 
 
 
@@ -267,15 +308,16 @@ void MainWindow::on_pushButton_17_clicked()
                                       QPainter painter(&pdf);
                                      int i = 4000;
 
-                                     painter.drawPixmap(QRect(100,100,2000,2000),QPixmap("C:/Users/Admin/Desktop/logo.png"));
+       //   painter.drawPixmap(QRect(100,100,2000,2000),QPixmap("C:/Users/omarz/Dropbox/PC/Downloads/logo.png"));
+
                                          painter.drawText(900,650,"omar zaghouani");
 
-                                          //painter.drawPixmap(QRect(7600,100,2100,2700),QPixmap("C:/Users/Admin/Desktop/logo.png"));
+                                          painter.drawPixmap(QRect(7600,100,1900,2500),QPixmap("C:/Users/omarz/Dropbox/PC/Downloads/logo.png"));
 
-                                          painter.setPen(Qt::blue);
+                                          painter.setPen(Qt::darkYellow);
                                           painter.setFont(QFont("Time New Roman", 25));
                                           painter.drawText(3000,1400,"Liste Des juges");
-                                          painter.setPen(Qt::black);
+                                          painter.setPen(Qt::darkYellow);
                                           painter.setFont(QFont("Time New Roman", 15));
                                           painter.drawRect(100,100,9400,2500);
                                           painter.drawRect(100,3000,9400,500);
@@ -359,6 +401,177 @@ QMessageBox::information(nullptr, QObject::tr("database is not open"),
 
 void MainWindow::on_pushButton_Sui_m_2_clicked()
 {
+
+
    statistique s;
            s.exec();
+}
+
+void MainWindow::on_pushButton_ajouter_5_clicked()
+{
+    int idd=ui->id->text().toInt();
+    QString mdpp=ui->mdp->text();
+    QString nomm=ui->nom->text();
+
+            QString prenomn=ui->prenom->text();
+            QString maill=ui->mail->text();
+          QString date=ui->_date_h_2->text();
+
+                    QString typee=ui->comboBox_9->currentText();
+                    juje j( idd, mdpp, prenomn, nomm, typee,  maill,date);
+                    ui-> tableView_aff_h->setModel(j.afficher());
+
+bool test =j.ajouter();
+if(test )
+{
+    QMessageBox::information(nullptr, QObject::tr("database is open"),
+                QObject::tr("ajout successful.\n"
+                            "Click Cancel to exit."), QMessageBox::Cancel);
+  //  ui-> tableView_aff_h->setModel(j.afficher());
+
+//ui-> tableView_aff_h_2->setModel(j.afficher());
+
+}
+else{
+    QMessageBox::information(nullptr, QObject::tr("database is not open"),
+                QObject::tr("ajout failed.\n"
+
+                  "Click Cancel to exit."), QMessageBox::Cancel);}
+}
+
+
+
+void MainWindow::on_sendBtn_clicked()
+{
+    Smtp* smtp = new Smtp("omar.zaghouani@esprit.tn",ui->mail_pass->text(), "smtp.gmail.com");
+    connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+
+    if( !files.isEmpty() )
+        smtp->sendMail("omar.zaghouani@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText(), files );
+    else
+        smtp->sendMail("omar.zaghouani@esprit.tn", ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText());
+
+    {
+            QMessageBox::information(nullptr, QObject::tr("OK"),
+                        QObject::tr("mail envoyé\n"
+                                    "Click Cancel to exit."), QMessageBox::Cancel);
+
+
+            /*QString link="https://mail.google.com/mail/u/0/#inbox?compose=new";
+                QDesktopServices::openUrl(link);*/
+
+    }
+  }
+
+
+
+
+
+
+
+
+void MainWindow::on_sendBtn_2_clicked()
+{
+    QString link="https://mail.google.com/mail/u/1/#inbox?compose=new";
+        QDesktopServices::openUrl(link);
+}
+
+
+void MainWindow::on_calendarWidget_clicked(const QDate &date)
+
+{
+    days=days+date.toString()+"|";
+        ui->les_jours->setText(days);
+
+
+}
+
+
+
+
+
+
+
+
+/*void MainWindow::on_pushButton_ajouter_6_clicked()
+{
+    QString moiss=ui->mois->text();
+    QString jourr=ui->jour->text();
+
+            QString anneee=ui->annee->text();
+            bool test =j.ajouter();
+            if(test )
+            {
+                QMessageBox::information(nullptr, QObject::tr("database is open"),
+                            QObject::tr("ajout calendrier successful.\n"
+                                        "Click Cancel to exit."), QMessageBox::Cancel);
+               // ui-> tableView_aff_h->setModel(j.afficher());
+
+            //ui-> tableView_aff_h_2->setModel(j.afficher());
+                ui-> tableView_aff_h_3->setModel(j.afficher());
+
+            }
+            else{
+                QMessageBox::information(nullptr, QObject::tr("database is not open"),
+                            QObject::tr("ajout  calendrier failed.\n"
+
+                              "Click Cancel to exit."), QMessageBox::Cancel);}
+
+}
+*/
+
+void MainWindow::on_pushButton_Sui_m_3_clicked()
+{
+
+    QPieSeries *series = new QPieSeries();
+
+
+               QStringList list=j.listeadresses("identifiant");
+
+ ui-> tableView_aff_h->setModel(j.afficher());
+   //ui-> tableView_aff_h_2->setModel(j.afficher());
+               for (int i =0; i< list.size();i++)
+               {
+                   //series->append(list[i],j.calcul_adresses(list[i],"identifiant"));
+ui-> tableView_aff_h->setModel(j.afficher());
+
+               }
+               QPieSlice *slice = series->slices().at(5);
+               ui-> tableView_aff_h->setModel(j.afficher());
+               slice->setLabelVisible();
+               slice->setExploded();
+
+
+               QtCharts::QChart *chart =new QtCharts::QChart();
+               chart->addSeries(series);
+               chart->setTitle("Statistiques");
+               chart->setAnimationOptions(QChart::AllAnimations);
+               QChartView *chartview=new QChartView(chart);
+               //modi
+               chartview = new QChartView(chart,ui->statistiques_4);
+                                   chartview->setRenderHint(QPainter::Antialiasing);
+                                   chartview->setMinimumSize(600,380);
+               QGridLayout *mainLayout=new QGridLayout();
+               mainLayout->addWidget(chartview,0,0);
+               ui->statistiques_4->setLayout(mainLayout);
+
+ui-> tableView_aff_h->setModel(j.afficher());
+}
+
+void MainWindow::on_sendBtn_3_clicked()
+{
+    QString link="https://calendar.google.com/calendar/u/0/r";
+        QDesktopServices::openUrl(link);
+}
+
+void MainWindow::on_sendBtn_4_clicked()
+{
+    QString link="https://calendar.google.com/calendar/u/0/r";
+        QDesktopServices::openUrl(link);
+}
+
+void MainWindow::on_ent_date_Aj_userDateChanged(const QDate &date)
+{
+    days=days+date.toString()+"|";
+        ui->les_jours->setText(days);
 }

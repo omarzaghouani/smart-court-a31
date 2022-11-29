@@ -20,7 +20,7 @@ int statistique::Statistique_partie2()
 {
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from jugeee where identifiant = '5555'") ;
+    QSqlQuery requete("select * from CALENDRIER where mois = 'avirl'") ;
     while(requete.next())
     {
             count++ ;
@@ -33,7 +33,7 @@ int statistique::Statistique_partie3()
 {
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from jugeee where identifiant = '5856'") ;
+    QSqlQuery requete("select * from CALENDRIER where mois = 'mai'") ;
     while(requete.next())
     {
             count++ ;
@@ -45,7 +45,7 @@ int statistique::Statistique_partie4()
 {
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from jugeee where identifiant = '222233'") ;
+    QSqlQuery requete("select * from CALENDRIER where mois = 'mars'") ;
     while(requete.next())
     {
             count++ ;
@@ -57,7 +57,7 @@ int statistique::Statistique_partie5()
 {
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from jugeee where identifiant = '22222'") ;
+    QSqlQuery requete("select * from  CALENDRIER where mois = 'juillet'") ;
     while(requete.next())
     {
             count++ ;
@@ -69,7 +69,7 @@ int statistique::Statistique_partie6()
 {
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from jugeee where identifiant = '1111'") ;
+    QSqlQuery requete("select * from  CALENDRIER where mois = 'octobre'") ;
     while(requete.next())
     {
             count++ ;
@@ -124,17 +124,23 @@ void statistique::paintEvent(QPaintEvent *)
 
     painter.setBrush(Qt::blue);
     painter.drawPie(size,0,16*y);
-    ui->label_13->setText(" IDENTIFIANT") ;
+    ui->label_13->setText(" janvier") ;
     painter.setBrush(Qt::green);
     painter.drawPie(size,16*y,16*m);
+     ui->label_14->setText(" fevrier") ;
     painter.setBrush(Qt::black);
     painter.drawPie(size,16*(m+y),16*p);
+     ui->label_10->setText(" mars") ;
     painter.setBrush(Qt::yellow);
     painter.drawPie(size,16*(m+y+p),16*v);
+     ui->label_9->setText(" mai") ;
     painter.setBrush(Qt::red);
     painter.drawPie(size,16*(m+y+p+v),16*w);
+     ui->label_7->setText(" avril") ;
     std::string stat_text("33,33%");
-    /*QStaticText bleu(stat_text.c_str());
+
+
+   /* QStaticText bleu(stat_text.c_str());
     painter.drawStaticText(80,150,bleu);
 
     std::string stat_text2("33,33%");

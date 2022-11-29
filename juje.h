@@ -35,6 +35,9 @@ public:
 bool supprimer(int id);
 
 void chercher(QTableView *table,int idd);
+QStringList listeadresses(QString var);
+int calcul_adresses(QString adresse,QString val);
+
 };
 
 #endif // AFFAIRE_H

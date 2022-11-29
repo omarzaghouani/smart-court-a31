@@ -23,12 +23,14 @@ public:
          int Statistique_partie4() ;
          int Statistique_partie5() ;
          int Statistique_partie6() ;
+      //   int Statistique_partie6() ;
         void paintEvent(QPaintEvent *) ;
 
     ~statistique();
 
 private:
     Ui::statistique *ui;
+
 private slots :
 
 };
